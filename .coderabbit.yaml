@@ -1,0 +1,61 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+#
+# CodeRabbit reviews pull requests automatically.  The GitHub App must be
+# installed on the repository (https://github.com/apps/coderabbitai) for this
+# file to take effect; it configures the app, it does not enable it.
+language: en-US
+reviews:
+  # "assertive" posts nits and smaller findings that "chill" keeps to itself.
+  profile: assertive
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  auto_review:
+    enabled: true
+    drafts: false
+    # Review pull requests against any branch, not only the default one.
+    base_branches:
+      - ".*"
+  # The sample images are binary fixtures, not code to review.
+  path_filters:
+    - "!tests/data/**"
+  # CodeRabbit reviews the diff.  Ask it to read the code around each change
+  # too, since that is where the leftovers of a change tend to be.
+  path_instructions:
+    - path: "src/**"
+      instructions: |
+        This is a gdk-pixbuf loader that renders untrusted SVG and Lottie
+        files through ThorVG.  Read the whole function, class and file
+        around each change, not only the changed lines, and report problems
+        you find there as well, saying that they predate the change.  In
+        particular look for:
+        - members, variables, parameters and functions that are written
+          but never read, or never used at all;
+        - state that is set in one call and not reset in the next one;
+        - error returns that are ignored or reported as success;
+        - sizes, offsets and counts taken from the file without bounds
+          checks, integer overflow, and missing limits on allocations
+          (canvas dimensions in particular);
+        - the pixbuf's channel order, stride and premultiplied alpha versus
+          what ThorVG's canvas produces;
+        - claims in comments, magic numbers or registrations that do not
+          match what the code does.
+        Code style is FreeBSD style(9), as described in AGENTS.md if
+        present; do not suggest Google, LLVM or GNOME conventions or
+        Doxygen comments.
+    - path: "tests/**"
+      instructions: |
+        Check that each test can actually fail: that it compares against
+        the expected value rather than whatever the code returns, and that
+        every fixture is also exercised here.
+  tools:
+    github-checks:
+      enabled: true
+chat:
+  auto_reply: true
+knowledge_base:
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      - "AGENTS.md"
