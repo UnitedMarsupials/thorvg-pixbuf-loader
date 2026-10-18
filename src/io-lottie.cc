@@ -214,6 +214,6 @@ fill_info(GdkPixbufFormat *info)
 	info->description = (gchar *)"Lottie animation";
 	info->mime_types = mime_types;
 	info->extensions = extensions;
-	info->flags = GDK_PIXBUF_FORMAT_THREADSAFE;
+	info->flags = GDK_PIXBUF_FORMAT_SCALABLE | GDK_PIXBUF_FORMAT_THREADSAFE;
 	info->license = (gchar *)"BSD";
 }

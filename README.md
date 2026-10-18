@@ -49,8 +49,8 @@ Needs gdk-pixbuf 2.36+, ThorVG 1.x and pkg-config, and BSD make or GNU make
     make test
     make install          # also refreshes the loaders cache
 
-The loader goes where the installed gdk-pixbuf looks for loaders; use
-`make PREFIX=... install` for another prefix and `DESTDIR` for staging.
+The loader goes where the installed gdk-pixbuf looks for loaders, the only
+place it can be found; use `DESTDIR` for staging.
 The tests load the files in `tests/data` through a private loaders cache;
 `tests/gen-data.sh` regenerates them.
 

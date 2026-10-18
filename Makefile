@@ -7,15 +7,13 @@
 # GNUmakefile, which either make reads in preference to this file, include
 # it and hold whatever is particular to one make or one system.
 #
-# Install into another prefix with "make PREFIX=... install"; by default
-# the loader goes where the installed gdk-pixbuf looks for it.
+# A loader is only found in the directory gdk-pixbuf looks in, so that is
+# where it is installed; DESTDIR stages it elsewhere.
 
 PKG_CONFIG=	pkg-config
 PACKAGES=	gdk-pixbuf-2.0 gmodule-2.0 thorvg-1
 
-PREFIX!=	${PKG_CONFIG} --variable=prefix gdk-pixbuf-2.0
-MODULEDIR!=	${PKG_CONFIG} --define-variable=prefix=${PREFIX} \
-		    --variable=gdk_pixbuf_moduledir gdk-pixbuf-2.0
+MODULEDIR!=	${PKG_CONFIG} --variable=gdk_pixbuf_moduledir gdk-pixbuf-2.0
 QUERY_LOADERS!=	${PKG_CONFIG} --variable=gdk_pixbuf_query_loaders \
 		    gdk-pixbuf-2.0
 PKG_CFLAGS!=	${PKG_CONFIG} --cflags ${PACKAGES}
