@@ -2,12 +2,12 @@
 # is slower, and its findings land in the repository's Security tab rather
 # than failing a build.
 #
-# Build mode "none" for now: the repository starts without a build system,
-# and CodeQL can extract C/C++ source without compiling it.  Once a meson
-# build exists, switch to build-mode "manual" and compile the loader target
-# (see webm-pixbuf-loader's workflow), so that CodeQL sees the code as built,
-# with gdk-pixbuf's and ThorVG's headers.  The sample files and the test
-# driver are not analysed (.github/codeql/config.yml).
+# Build mode "none" for now: CodeQL can extract C/C++ source without
+# compiling it, and compiling needs ThorVG 1.x, which Ubuntu does not
+# package.  Once CI builds ThorVG from source, switch to build-mode "manual"
+# and run "make" (see webm-pixbuf-loader's workflow), so that CodeQL sees
+# the code as built, with gdk-pixbuf's and ThorVG's headers.  The sample
+# files and the test driver are not analysed (.github/codeql/config.yml).
 
 name: CodeQL
 

@@ -25,10 +25,10 @@ reviews:
   path_instructions:
     - path: "src/**"
       instructions: |
-        This is a gdk-pixbuf loader that renders untrusted SVG and Lottie
-        files through ThorVG.  Read the whole function, class and file
-        around each change, not only the changed lines, and report problems
-        you find there as well, saying that they predate the change.  In
+        This is a gdk-pixbuf loader that renders untrusted Lottie files
+        through ThorVG.  Read the whole function, class and file around
+        each change, not only the changed lines, and report problems you
+        find there as well, saying that they predate the change.  In
         particular look for:
         - members, variables, parameters and functions that are written
           but never read, or never used at all;
@@ -41,9 +41,8 @@ reviews:
           what ThorVG's canvas produces;
         - claims in comments, magic numbers or registrations that do not
           match what the code does.
-        Code style is FreeBSD style(9), as described in AGENTS.md if
-        present; do not suggest Google, LLVM or GNOME conventions or
-        Doxygen comments.
+        Code style is FreeBSD style(9), as described in AGENTS.md; do not
+        suggest Google, LLVM or GNOME conventions or Doxygen comments.
     - path: "tests/**"
       instructions: |
         Check that each test can actually fail: that it compares against
