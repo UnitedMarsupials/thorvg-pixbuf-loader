@@ -1,0 +1,4 @@
+*.o
+*.so
+tests/test-loader
+tests/loaders.cache

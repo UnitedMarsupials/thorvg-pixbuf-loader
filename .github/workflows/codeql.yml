@@ -2,12 +2,12 @@
 # is slower, and its findings land in the repository's Security tab rather
 # than failing a build.
 #
-# Build mode "none" for now: the repository starts without a build system,
-# and CodeQL can extract C/C++ source without compiling it.  Once a meson
-# build exists, switch to build-mode "manual" and compile the loader target
-# (see webm-pixbuf-loader's workflow), so that CodeQL sees the code as built,
-# with gdk-pixbuf's and ThorVG's headers.  The sample files and the test
-# driver are not analysed (.github/codeql/config.yml).
+# Build mode "manual": CodeQL traces a real build, so it sees the code as
+# compiled, with gdk-pixbuf's and ThorVG's headers.  Ubuntu 24.04 has no
+# ThorVG 1.x; Homebrew, preinstalled on the runner, has the current release.
+# Only ThorVG's own keg is put on PKG_CONFIG_PATH, so everything else still
+# comes from Ubuntu.  The sample files and the test driver are not analysed
+# (.github/codeql/config.yml).
 
 name: CodeQL
 
@@ -38,11 +38,27 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+              make pkg-config libgdk-pixbuf-2.0-dev
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          brew install thorvg
+          echo "PKG_CONFIG_PATH=$(brew --prefix thorvg)/lib/pkgconfig" \
+              >> "$GITHUB_ENV"
+
       - uses: github/codeql-action/init@v4
         with:
           languages: c-cpp
-          build-mode: none
+          build-mode: manual
           config-file: ./.github/codeql/config.yml
+
+      # Build only the loader, the default target: paths-ignore does not
+      # keep a compiled file out of the analysis, so the test driver is left
+      # out by not compiling it rather than by the config alone.
+      - name: Build
+        run: make
 
       - uses: github/codeql-action/analyze@v4
         with:
